@@ -43,6 +43,7 @@
     <button id="send-button">Send</button>
   </div>
 
+  <a href="/logout" id="logout-button">Logout</a>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -53,6 +54,7 @@
     const messageInput = document.getElementById('message-input');
     const sendButton = document.getElementById('send-button');
     const messages = document.getElementById('messages');
+    const logoutButton = document.getElementById('logout-button')
 
     sendButton.addEventListener('click', () => {
       const message = messageInput.value; // 入力内容を取得
@@ -67,6 +69,10 @@
       const item = document.createElement('li'); // 新しいリストアイテムを作成
       item.textContent = `${data.user}: ${data.text}`; // メッセージ内容を設定
       document.querySelector('#messages').appendChild(item);
+    });
+
+    logoutButton.addEventListener('click', () => {
+      window.location.href = '/logout'; // ログアウトルートに接続
     });
   </script>
 </body>
