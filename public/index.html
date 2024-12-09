@@ -36,16 +36,14 @@
   </style>
 </head>
 <body>
-  <!-- メッセージを表示するエリア -->
+  <h1>Chat Room</h1>
   <ul id="messages"></ul>
-
-  <!-- メッセージ入力と送信エリア -->
   <div id="input-area">
     <input id="message-input" type="text" placeholder="Type your message here">
     <button id="send-button">Send</button>
   </div>
 
-  <!-- Socket.IOクライアント用のスクリプトを読み込む -->
+
   <script src="/socket.io/socket.io.js"></script>
   <script>
     // サーバーと接続
@@ -65,11 +63,10 @@
     });
 
     // サーバーからメッセージを受信
-    socket.on('chat message', (msg) => {
-      const li = document.createElement('li'); // 新しいリストアイテムを作成
-      li.textContent = msg; // メッセージ内容を設定
-      messages.appendChild(li); // メッセージリストに追加
-      messages.scrollTop = messages.scrollHeight; // 最新メッセージまでスクロール
+    socket.on('chat message', (data) => {
+      const item = document.createElement('li'); // 新しいリストアイテムを作成
+      item.textContent = `${data.user}: ${data.text}`; // メッセージ内容を設定
+      document.querySelector('#messages').appendChild(item);
     });
   </script>
 </body>
