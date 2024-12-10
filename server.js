@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 // 必要なモジュールを読み込む
 const express = require('express');
 const http = require('http');
@@ -5,6 +7,16 @@ const { Server } = require('socket.io');
 const session = require('express-session');
 const path = require('path');
 const authRoutes = require('./routes/auth');
+const mongoose = require('mongoose');
+
+// 環境変数からMongoDB URIとセッションキーを取得
+const mongoURI = process.env.MONGODB_URI;
+const secretKey = process.env.SECRET_KEY;
+
+// MongoDB接続
+mongoose.connect(mongoURI)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log('Error connecting to MongoDB:', err));
 
 // Expressアプリケーションを作成
 const app = express();
@@ -17,7 +29,7 @@ const io = new Server(server);
 
 // セッション設定
 const sessionMiddleware = session({
-    secret: 'secret-key',
+    secret: secretKey,
     resave: false,
     saveUninitialized: false,
 });
