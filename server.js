@@ -63,17 +63,6 @@ app.get('/chat', (req, res) => {
     }
 });
 
-// ログアウト処理
-app.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Failed to destroy session:', err);
-            return res.status(500).send('An error occured while logging out');
-        }
-        res.redirect('/'); // ログアウト後はログイン画面に遷移
-    });
-});
-
 // ユーザー登録画面
 app.get('/register', (req, res) => {
     res.sendFile(__dirname + '/public/register.html');
