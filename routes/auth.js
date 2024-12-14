@@ -85,4 +85,38 @@ router.get('/logout', (req, res) => {
   });
 });
 
+// アカウント削除処理
+router.post('/delete-account', async (req, res) => {
+  const username = req.session.user;
+
+  if(!username) {
+    return res.status(401).send(`
+      <div>
+        <p>Yout must be logged in to delete your account.</p>
+        <a href="/">Go to login page</a>
+      </div>
+    `);
+  }
+
+  try {
+    const result = await User.deleteOne({ username });
+
+    if (result.deletedCount === 1) {
+      console.log(`User '${username}' has been deleted.`);
+      req.session.destroy((err) => {
+        if (err) {
+          console.log('Failed to destroy session:', err);
+          return res.status(500).send('An error occurred while deleting the account.');
+        }
+        res.redirect('/');
+      });
+    } else {
+      res.status(400).send('Account deletion failed');
+    }
+  } catch (err) {
+    console.error('Error deleting account:', err);
+    res.status(500).send('An error occurred while deleting the account.');
+  }
+});
+
 module.exports = router;
